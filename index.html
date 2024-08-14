@@ -1,4 +1,4 @@
-<!-- SESSION 5: ENHANCED FILTERS AND WEEKLY OFFERS -->
+<!-- SESSION 6: ENHANCED FILTERS, ADDITIONAL ITEMS, AND CART FEATURE -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,6 +83,8 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
             margin: 20px 0;
+            cursor: pointer;
+            position: relative;
             transition: transform 0.3s ease-in-out, opacity 0.5s;
             display: none;
         }
@@ -91,6 +93,15 @@
             display: block;
             opacity: 1;
             animation: fadeIn 0.5s ease-in;
+        }
+
+        .menu-item.checked::after {
+            content: "✔️";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #28a745;
         }
 
         @keyframes fadeIn {
@@ -140,6 +151,34 @@
             font-size: 16px;
             color: #666;
             margin-bottom: 10px;
+        }
+
+        /* Cart Section */
+        .cart-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .cart-section h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .cart-item {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
         }
 
         /* Footer */
@@ -248,34 +287,60 @@
             <span class="price">$14.99</span>
         </div>
 
-        <!-- Weekly Offers Section -->
+        <div class="menu-item salads">
+            <h2>Caprese Salad</h2>
+            <p>Tomatoes, mozzarella, basil, and a drizzle of balsamic reduction.</p>
+            <span class="price">$10.99</span>
+        </div>
+
+        <!-- Weekly Offers -->
         <div class="offers-section">
-            <h2>Weekly Offers 🌟</h2>
-            <div class="offer">Monday: Buy 1 Pizza, Get 1 Free 🍕🍕</div>
-            <div class="offer">Tuesday: 20% Off All Salads 🥗</div>
-            <div class="offer">Wednesday: Pasta Special - 2 for 1 🍝🍝</div>
-            <div class="offer">Thursday: 15% Off All Desserts 🍰</div>
-            <div class="offer">Friday: Free Soft Drink with Every Pizza 🍹</div>
-            <div class="offer">Saturday: Family Meal Deal - 30% Off 🍽️</div>
-            <div class="offer">Sunday: 25% Off Any Order Over $50 💰</div>
+            <h2>Weekly Offers</h2>
+            <div class="offer">Monday: Buy 1 Pizza, Get 1 Free 🍕</div>
+            <div class="offer">Tuesday: 50% Off on Salads 🥗</div>
+            <div class="offer">Wednesday: Pasta Combo Special 🍝</div>
+            <div class="offer">Thursday: Dessert with Every Main Course 🍰</div>
+            <div class="offer">Friday: Free Drink with Pizza 🍹</div>
+            <div class="offer">Saturday: 20% Off on All Orders 🛍️</div>
+            <div class="offer">Sunday: Family Pack Deal 👨‍👩‍👧‍👦</div>
+        </div>
+
+        <!-- Cart Section -->
+        <div class="cart-section">
+            <h2>Your Cart 🛒</h2>
+            <div id="cart-items"></div>
+            <div id="total" class="total">Total: $0.00</div>
         </div>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        <p>&copy; 2024 Ziad's Place. All rights reserved. 🍕🍝🥗</p>
+        &copy; 2024 Ziad's Place | All Rights Reserved
     </div>
 
+    <!-- JavaScript -->
     <script>
-        // Handle multiple filters
         let activeFilters = [];
-
+        const prices = {
+            'Margherita Pizza': 12.99,
+            'Pepperoni Pizza': 13.99,
+            'BBQ Chicken Pizza': 14.99,
+            'Caesar Salad': 9.99,
+            'Greek Salad': 8.99,
+            'Caprese Salad': 10.99,
+            'Spaghetti Carbonara': 14.99,
+            'Fettuccine Alfredo': 12.99,
+            'Tiramisu': 6.99,
+            'Cheesecake': 7.99
+        };
+        const cart = [];
+        
         function toggleFilter(category) {
             const menuItems = document.querySelectorAll('.menu-item');
             const filterBtns = document.querySelectorAll('.filter-btn');
 
             // Toggle filter button color
-            document.querySelectorAll('.filter-btn').forEach(button => {
+            filterBtns.forEach(button => {
                 if (button.textContent.trim() === category || category === 'all') {
                     button.classList.toggle('active');
                 }
@@ -301,6 +366,43 @@
                 });
             }
         }
+
+        function updateCart() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            const totalDiv = document.getElementById('total');
+            cartItemsDiv.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                cartItemsDiv.innerHTML += `<div class="cart-item">${item} - $${prices[item].toFixed(2)}</div>`;
+                total += prices[item];
+            });
+
+            totalDiv.innerHTML = `Total: $${total.toFixed(2)}`;
+        }
+
+        function toggleItem(itemName) {
+            const menuItem = [...document.querySelectorAll('.menu-item')].find(item => item.querySelector('h2').textContent === itemName);
+
+            if (menuItem.classList.contains('checked')) {
+                menuItem.classList.remove('checked');
+                const index = cart.indexOf(itemName);
+                if (index > -1) cart.splice(index, 1);
+            } else {
+                menuItem.classList.add('checked');
+                cart.push(itemName);
+            }
+
+            updateCart();
+        }
+
+        // Add click event listener to menu items
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const itemName = item.querySelector('h2').textContent;
+                toggleItem(itemName);
+            });
+        });
 
         // Show all items by default
         window.onload = () => {
