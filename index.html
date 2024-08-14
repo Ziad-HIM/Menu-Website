@@ -1,4 +1,4 @@
-<!-- SESSION 3: MENU WEBSITE -->
+<!-- SESSION 4: MULTIPLE FILTERS AND NEW MENU ITEMS -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,6 +61,10 @@
             border-radius: 5px;
         }
 
+        .filter-btn.active {
+            background-color: #218838;
+        }
+
         .filter-btn:hover {
             background-color: #218838;
         }
@@ -73,7 +77,7 @@
             padding: 20px;
             margin: 20px 0;
             transition: transform 0.3s ease-in-out, opacity 0.5s;
-            display: none; /* Hide items initially */
+            display: none;
         }
 
         .menu-item.show {
@@ -153,49 +157,67 @@
 
         <!-- Menu Filters -->
         <div class="menu-filters">
-            <button class="filter-btn" onclick="filterMenu('all')">All</button>
-            <button class="filter-btn" onclick="filterMenu('pizza')">Pizza 🍕</button>
-            <button class="filter-btn" onclick="filterMenu('salads')">Salads 🥗</button>
-            <button class="filter-btn" onclick="filterMenu('pasta')">Pasta 🍝</button>
-            <button class="filter-btn" onclick="filterMenu('dessert')">Desserts 🍰</button>
+            <button class="filter-btn" onclick="toggleFilter('pizza')">Pizza 🍕</button>
+            <button class="filter-btn" onclick="toggleFilter('salads')">Salads 🥗</button>
+            <button class="filter-btn" onclick="toggleFilter('pasta')">Pasta 🍝</button>
+            <button class="filter-btn" onclick="toggleFilter('dessert')">Desserts 🍰</button>
+            <button class="filter-btn" onclick="toggleFilter('all')">All</button>
         </div>
 
         <!-- Menu Items -->
-        <div class="menu-item pizza show">
+        <div class="menu-item pizza">
             <h2>Margherita Pizza</h2>
             <p>Classic pizza with mozzarella, tomatoes, and fresh basil.</p>
             <span class="price">$12.99</span>
         </div>
 
-        <div class="menu-item salads show">
+        <div class="menu-item salads">
             <h2>Caesar Salad</h2>
             <p>Romaine lettuce with parmesan cheese, croutons, and Caesar dressing.</p>
             <span class="price">$9.99</span>
         </div>
 
-        <div class="menu-item pasta show">
+        <div class="menu-item pasta">
             <h2>Spaghetti Carbonara</h2>
             <p>Spaghetti tossed with eggs, pancetta, parmesan cheese, and pepper.</p>
             <span class="price">$14.99</span>
         </div>
 
-        <!-- New Menu Items -->
-        <div class="menu-item dessert show">
+        <div class="menu-item dessert">
             <h2>Tiramisu</h2>
             <p>Layered coffee-flavored dessert with mascarpone and cocoa.</p>
             <span class="price">$6.99</span>
         </div>
 
-        <div class="menu-item pizza show">
+        <div class="menu-item pizza">
             <h2>Pepperoni Pizza</h2>
             <p>Pepperoni, mozzarella, and tomato sauce on a crispy crust.</p>
             <span class="price">$13.99</span>
         </div>
 
-        <div class="menu-item salads show">
+        <div class="menu-item salads">
             <h2>Greek Salad</h2>
             <p>Fresh cucumbers, tomatoes, feta cheese, olives, and red onions.</p>
             <span class="price">$8.99</span>
+        </div>
+
+        <!-- New Menu Items -->
+        <div class="menu-item pasta">
+            <h2>Fettuccine Alfredo</h2>
+            <p>Rich creamy sauce with fettuccine pasta and parmesan cheese.</p>
+            <span class="price">$12.99</span>
+        </div>
+
+        <div class="menu-item dessert">
+            <h2>Cheesecake</h2>
+            <p>Classic creamy cheesecake with a graham cracker crust.</p>
+            <span class="price">$7.99</span>
+        </div>
+
+        <div class="menu-item pizza">
+            <h2>BBQ Chicken Pizza</h2>
+            <p>Chicken, BBQ sauce, onions, and mozzarella.</p>
+            <span class="price">$14.99</span>
         </div>
     </div>
 
@@ -205,17 +227,39 @@
     </div>
 
     <script>
-        // Filter menu function
-        function filterMenu(category) {
+        // Handle multiple filters
+        let activeFilters = [];
+
+        function toggleFilter(category) {
             const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => {
-                item.style.display = 'none'; // Hide all items
-                if (category === 'all' || item.classList.contains(category)) {
-                    item.classList.add('show');
-                    item.style.display = 'block';
+            const filterBtn = document.querySelectorAll(`.filter-btn`);
+
+            if (category === 'all') {
+                activeFilters = [];
+                menuItems.forEach(item => item.classList.add('show'));
+                filterBtn.forEach(btn => btn.classList.remove('active'));
+                return;
+            }
+
+            const index = activeFilters.indexOf(category);
+
+            if (index === -1) {
+                activeFilters.push(category);
+            } else {
+                activeFilters.splice(index, 1);
+            }
+
+            filterBtn.forEach(btn => {
+                if (activeFilters.includes(btn.textContent.trim().toLowerCase())) {
+                    btn.classList.add('active');
                 } else {
-                    item.classList.remove('show');
+                    btn.classList.remove('active');
                 }
+            });
+
+            menuItems.forEach(item => {
+                const itemCategory = Array.from(item.classList).find(cls => cls !== 'menu-item' && cls !== 'show');
+                item.style.display = activeFilters.length === 0 || activeFilters.includes(itemCategory) ? 'block' : 'none';
             });
         }
     </script>
