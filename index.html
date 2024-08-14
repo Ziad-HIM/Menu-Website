@@ -1,4 +1,4 @@
-<!-- SESSION 6: ENHANCED FILTERS, ADDITIONAL ITEMS, AND CART FEATURE -->
+<!-- SESSION 7: SINGLE FILTER MODE, MORE ITEMS, AND RESTAURANT DESCRIPTION -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +63,7 @@
         }
 
         .filter-btn.active {
-            background-color: #ffc107; /* Yellow color for active filters */
+            background-color: #218838; /* Dark green for active filter */
         }
 
         .filter-btn:hover {
@@ -181,6 +181,27 @@
             color: #28a745;
         }
 
+        /* Restaurant Description */
+        .restaurant-description {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .restaurant-description h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .restaurant-description p {
+            font-size: 16px;
+            color: #666;
+        }
+
         /* Footer */
         .footer {
             background-color: #333;
@@ -222,14 +243,21 @@
     <div class="menu-container">
         <h1>Welcome to Ziad's Place 🍕🍝🥗</h1>
 
+        <!-- Restaurant Description -->
+        <div class="restaurant-description">
+            <h2>About Ziad's Place</h2>
+            <p>Founded in 1995 in the heart of the vibrant city of Miraville, Ziad's Place has been serving delicious and authentic Italian cuisine for nearly three decades. With locations in Miraville, Riverton, and Brooksville, our restaurant offers a warm and inviting atmosphere, perfect for family gatherings, romantic dinners, or casual outings with friends.</p>
+            <p>Our founder, Ziad Al-Farsi, envisioned a place where people could enjoy high-quality food made with fresh, locally sourced ingredients. Over the years, Ziad's Place has grown from a small eatery to a beloved dining destination, known for its exceptional pizza, pasta, salads, and desserts. We take pride in our history and are committed to continuing our tradition of excellence.</p>
+        </div>
+
         <!-- Menu Filters -->
         <div class="menu-filters">
-            <button class="filter-btn" onclick="toggleFilter('pizza')">Pizza 🍕</button>
-            <button class="filter-btn" onclick="toggleFilter('salads')">Salads 🥗</button>
-            <button class="filter-btn" onclick="toggleFilter('pasta')">Pasta 🍝</button>
-            <button class="filter-btn" onclick="toggleFilter('dessert')">Desserts 🍰</button>
-            <button class="filter-btn" onclick="toggleFilter('all')">All</button>
-            <div class="filter-description">Select multiple filters to find your favorite dishes. Click 'All' to show everything.</div>
+            <button class="filter-btn" onclick="setFilter('pizza')">Pizza 🍕</button>
+            <button class="filter-btn" onclick="setFilter('salads')">Salads 🥗</button>
+            <button class="filter-btn" onclick="setFilter('pasta')">Pasta 🍝</button>
+            <button class="filter-btn" onclick="setFilter('dessert')">Desserts 🍰</button>
+            <button class="filter-btn" onclick="setFilter('all')">All</button>
+            <div class="filter-description">Select a single filter to view menu items of that type. Click 'All' to see everything.</div>
         </div>
 
         <!-- Menu Items -->
@@ -257,40 +285,96 @@
             <span class="price">$6.99</span>
         </div>
 
+        <!-- Added Menu Items -->
         <div class="menu-item pizza">
             <h2>Pepperoni Pizza</h2>
-            <p>Pepperoni, mozzarella, and tomato sauce on a crispy crust.</p>
+            <p>Pepperoni slices over mozzarella and tomato sauce.</p>
             <span class="price">$13.99</span>
+        </div>
+
+        <div class="menu-item pizza">
+            <h2>BBQ Chicken Pizza</h2>
+            <p>Chicken, barbecue sauce, and red onions on a cheesy base.</p>
+            <span class="price">$14.99</span>
         </div>
 
         <div class="menu-item salads">
             <h2>Greek Salad</h2>
-            <p>Fresh cucumbers, tomatoes, feta cheese, olives, and red onions.</p>
+            <p>Fresh cucumbers, olives, feta cheese, and tomatoes with a Greek dressing.</p>
             <span class="price">$8.99</span>
         </div>
 
         <div class="menu-item pasta">
             <h2>Fettuccine Alfredo</h2>
-            <p>Rich creamy sauce with fettuccine pasta and parmesan cheese.</p>
+            <p>Creamy Alfredo sauce with fettuccine noodles and parmesan cheese.</p>
             <span class="price">$12.99</span>
         </div>
 
         <div class="menu-item dessert">
             <h2>Cheesecake</h2>
-            <p>Classic creamy cheesecake with a graham cracker crust.</p>
+            <p>Rich and creamy cheesecake with a graham cracker crust.</p>
             <span class="price">$7.99</span>
         </div>
 
+        <!-- New Menu Items -->
         <div class="menu-item pizza">
-            <h2>BBQ Chicken Pizza</h2>
-            <p>Chicken, BBQ sauce, onions, and mozzarella.</p>
-            <span class="price">$14.99</span>
+            <h2>Veggie Pizza</h2>
+            <p>Loaded with fresh vegetables and topped with mozzarella cheese.</p>
+            <span class="price">$13.49</span>
+        </div>
+
+        <div class="menu-item pasta">
+            <h2>Lasagna</h2>
+            <p>Layers of pasta with ground beef, cheese, and marinara sauce.</p>
+            <span class="price">$15.49</span>
         </div>
 
         <div class="menu-item salads">
-            <h2>Caprese Salad</h2>
-            <p>Tomatoes, mozzarella, basil, and a drizzle of balsamic reduction.</p>
-            <span class="price">$10.99</span>
+            <h2>Cobb Salad</h2>
+            <p>Mixed greens with grilled chicken, bacon, eggs, and avocado.</p>
+            <span class="price">$11.99</span>
+        </div>
+
+        <div class="menu-item pizza">
+            <h2>Four Cheese Pizza</h2>
+            <p>A cheesy delight with mozzarella, cheddar, parmesan, and gorgonzola.</p>
+            <span class="price">$14.49</span>
+        </div>
+
+        <div class="menu-item dessert">
+            <h2>Chocolate Lava Cake</h2>
+            <p>Warm chocolate cake with a gooey center, served with vanilla ice cream.</p>
+            <span class="price">$8.49</span>
+        </div>
+
+        <div class="menu-item pasta">
+            <h2>Penne Arrabbiata</h2>
+            <p>Penne pasta in a spicy tomato sauce with garlic and red chili flakes.</p>
+            <span class="price">$13.49</span>
+        </div>
+
+        <div class="menu-item salads">
+            <h2>Quinoa Salad</h2>
+            <p>Healthy quinoa with black beans, corn, and a lime vinaigrette.</p>
+            <span class="price">$10.49</span>
+        </div>
+
+        <div class="menu-item dessert">
+            <h2>Apple Pie</h2>
+            <p>Classic apple pie with a buttery crust and a scoop of vanilla ice cream.</p>
+            <span class="price">$7.49</span>
+        </div>
+
+        <div class="menu-item pizza">
+            <h2>Meat Lover's Pizza</h2>
+            <p>Loaded with pepperoni, sausage, ham, and bacon on a cheese base.</p>
+            <span class="price">$15.99</span>
+        </div>
+
+        <div class="menu-item pasta">
+            <h2>Ravioli</h2>
+            <p>Stuffed pasta with cheese filling, served in a tomato sauce.</p>
+            <span class="price">$14.49</span>
         </div>
 
         <!-- Weekly Offers -->
@@ -320,51 +404,53 @@
 
     <!-- JavaScript -->
     <script>
-        let activeFilters = [];
+        let activeFilter = null;
         const prices = {
             'Margherita Pizza': 12.99,
             'Pepperoni Pizza': 13.99,
             'BBQ Chicken Pizza': 14.99,
+            'Veggie Pizza': 13.49,
+            'Four Cheese Pizza': 14.49,
+            'Meat Lover\'s Pizza': 15.99,
             'Caesar Salad': 9.99,
             'Greek Salad': 8.99,
-            'Caprese Salad': 10.99,
+            'Cobb Salad': 11.99,
+            'Quinoa Salad': 10.49,
             'Spaghetti Carbonara': 14.99,
             'Fettuccine Alfredo': 12.99,
+            'Lasagna': 15.49,
+            'Penne Arrabbiata': 13.49,
+            'Ravioli': 14.49,
             'Tiramisu': 6.99,
-            'Cheesecake': 7.99
+            'Cheesecake': 7.99,
+            'Chocolate Lava Cake': 8.49,
+            'Apple Pie': 7.49
         };
         const cart = [];
-        
-        function toggleFilter(category) {
+
+        function setFilter(category) {
             const menuItems = document.querySelectorAll('.menu-item');
             const filterBtns = document.querySelectorAll('.filter-btn');
 
-            // Toggle filter button color
-            filterBtns.forEach(button => {
-                if (button.textContent.trim() === category || category === 'all') {
-                    button.classList.toggle('active');
-                }
-            });
+            // Reset active filter
+            filterBtns.forEach(button => button.classList.remove('active'));
 
             if (category === 'all') {
-                activeFilters = [];
+                activeFilter = null;
                 menuItems.forEach(item => item.classList.add('show'));
             } else {
-                const index = activeFilters.indexOf(category);
-                if (index > -1) {
-                    activeFilters.splice(index, 1);
-                } else {
-                    activeFilters.push(category);
-                }
-
+                activeFilter = category;
                 menuItems.forEach(item => {
-                    if (activeFilters.length === 0 || activeFilters.includes(item.classList[1])) {
+                    if (item.classList.contains(category)) {
                         item.classList.add('show');
                     } else {
                         item.classList.remove('show');
                     }
                 });
             }
+            
+            // Highlight selected filter button
+            document.querySelector(`.filter-btn[onclick="setFilter('${category}')"]`).classList.add('active');
         }
 
         function updateCart() {
