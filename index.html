@@ -1,4 +1,5 @@
-<!-- SESSION 7: SINGLE FILTER MODE, MORE ITEMS, AND RESTAURANT DESCRIPTION -->
+<!-- SESSION 8 -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -229,6 +230,11 @@
                 margin: 5px 0;
             }
         }
+
+        /* Hide headers for "All" filter */
+        .show-all .menu-item:not(.pizza):not(.salads):not(.pasta):not(.dessert):not(.appetizer):not(.beverage):not(.side) h2 {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -247,7 +253,7 @@
         <div class="restaurant-description">
             <h2>About Ziad's Place</h2>
             <p>Founded in 1995 in the heart of the vibrant city of Miraville, Ziad's Place has been serving delicious and authentic Italian cuisine for nearly three decades. With locations in Miraville, Riverton, and Brooksville, our restaurant offers a warm and inviting atmosphere, perfect for family gatherings, romantic dinners, or casual outings with friends.</p>
-            <p>Our founder, Ziad Al-Farsi, envisioned a place where people could enjoy high-quality food made with fresh, locally sourced ingredients. Over the years, Ziad's Place has grown from a small eatery to a beloved dining destination, known for its exceptional pizza, pasta, salads, and desserts. We take pride in our history and are committed to continuing our tradition of excellence.</p>
+            <p>Our founder, Ziad (THATS ME!), envisioned a place where people could enjoy high-quality food made with fresh, locally sourced ingredients. Over the years, Ziad's Place has grown from a small eatery to a beloved dining destination, known for its exceptional pizza, pasta, salads, and desserts. We take pride in our history and are committed to continuing our tradition of excellence. Thanks for reading this, use code ZIADISTHEBEST for 100% off!</p>
         </div>
 
         <!-- Menu Filters -->
@@ -377,6 +383,63 @@
             <span class="price">$14.49</span>
         </div>
 
+        <!-- New Menu Section: Appetizers -->
+        <div class="menu-item appetizer">
+            <h2>Bruschetta</h2>
+            <p>Toasted bread topped with fresh tomatoes, garlic, and basil.</p>
+            <span class="price">$7.99</span>
+        </div>
+
+        <div class="menu-item appetizer">
+            <h2>Garlic Knots</h2>
+            <p>Warm, soft knots of dough with garlic butter.</p>
+            <span class="price">$5.99</span>
+        </div>
+
+        <div class="menu-item appetizer">
+            <h2>Calamari</h2>
+            <p>Fried calamari rings served with marinara sauce.</p>
+            <span class="price">$9.99</span>
+        </div>
+
+        <!-- New Menu Section: Beverages -->
+        <div class="menu-item beverage">
+            <h2>Soda</h2>
+            <p>Coke, Diet Coke, Sprite, Lemonade.</p>
+            <span class="price">$2.49</span>
+        </div>
+
+        <div class="menu-item beverage">
+            <h2>Juice</h2>
+            <p>Orange, Apple, Cranberry.</p>
+            <span class="price">$2.99</span>
+        </div>
+
+        <div class="menu-item beverage">
+            <h2>Iced Tea</h2>
+            <p>Sweet or Unsweetened.</p>
+            <span class="price">$2.49</span>
+        </div>
+
+        <!-- New Menu Section: Sides -->
+        <div class="menu-item side">
+            <h2>French Fries</h2>
+            <p>Crispy fries served with ketchup.</p>
+            <span class="price">$3.99</span>
+        </div>
+
+        <div class="menu-item side">
+            <h2>Onion Rings</h2>
+            <p>Golden onion rings with a crispy batter.</p>
+            <span class="price">$4.99</span>
+        </div>
+
+        <div class="menu-item side">
+            <h2>Garlic Bread</h2>
+            <p>Toasted bread with garlic butter.</p>
+            <span class="price">$3.49</span>
+        </div>
+
         <!-- Weekly Offers -->
         <div class="offers-section">
             <h2>Weekly Offers</h2>
@@ -394,6 +457,12 @@
             <h2>Your Cart 🛒</h2>
             <div id="cart-items"></div>
             <div id="total" class="total">Total: $0.00</div>
+
+            <!-- Coupon Code Section -->
+            <div>
+                <input type="text" id="coupon-code" placeholder="Enter coupon code">
+                <button onclick="applyCoupon()">Apply Coupon</button>
+            </div>
         </div>
     </div>
 
@@ -424,7 +493,16 @@
             'Tiramisu': 6.99,
             'Cheesecake': 7.99,
             'Chocolate Lava Cake': 8.49,
-            'Apple Pie': 7.49
+            'Apple Pie': 7.49,
+            'Bruschetta': 7.99,
+            'Garlic Knots': 5.99,
+            'Calamari': 9.99,
+            'Soda': 2.49,
+            'Juice': 2.99,
+            'Iced Tea': 2.49,
+            'French Fries': 3.99,
+            'Onion Rings': 4.99,
+            'Garlic Bread': 3.49
         };
         const cart = [];
 
@@ -438,6 +516,7 @@
             if (category === 'all') {
                 activeFilter = null;
                 menuItems.forEach(item => item.classList.add('show'));
+                document.querySelector('.menu-container').classList.add('show-all'); // Add class to hide headers
             } else {
                 activeFilter = category;
                 menuItems.forEach(item => {
@@ -447,6 +526,7 @@
                         item.classList.remove('show');
                     }
                 });
+                document.querySelector('.menu-container').classList.remove('show-all'); // Remove class to show headers
             }
             
             // Highlight selected filter button
@@ -460,8 +540,13 @@
             let total = 0;
 
             cart.forEach(item => {
-                cartItemsDiv.innerHTML += `<div class="cart-item">${item} - $${prices[item].toFixed(2)}</div>`;
-                total += prices[item];
+                const [itemName, quantity] = item.split(' x ');
+                if (prices[itemName]) { // Check if itemName exists in prices
+                    cartItemsDiv.innerHTML += `<div class="cart-item">${itemName} x ${quantity} - $${(prices[itemName] * quantity).toFixed(2)}</div>`;
+                    total += prices[itemName] * quantity;
+                } else {
+                    console.error(`Invalid item name: ${itemName}`);
+                }
             });
 
             totalDiv.innerHTML = `Total: $${total.toFixed(2)}`;
@@ -488,12 +573,40 @@
                 const itemName = item.querySelector('h2').textContent;
                 toggleItem(itemName);
             });
+
+            // Double-click functionality
+            item.addEventListener('dblclick', () => {
+                const itemName = item.querySelector('h2').textContent;
+                const quantity = prompt("Enter the quantity:", "1");
+
+                if (quantity !== null && !isNaN(quantity) && quantity > 0) {
+                    const existingItem = cart.find(item => item.startsWith(itemName));
+                    if (existingItem) {
+                        const [name, currentQuantity] = existingItem.split(' x ');
+                        cart[cart.indexOf(existingItem)] = `${name} x ${parseInt(currentQuantity) + parseInt(quantity)}`;
+                    } else {
+                        cart.push(`${itemName} x ${quantity}`);
+                    }
+                    updateCart();
+                }
+            });
         });
 
         // Show all items by default
         window.onload = () => {
             document.querySelectorAll('.menu-item').forEach(item => item.classList.add('show'));
         };
+
+        // Coupon Code Functionality
+        function applyCoupon() {
+            const couponCode = document.getElementById('coupon-code').value.toUpperCase();
+            if (couponCode === "ZIADISTHEBEST") {
+                alert("Congratulations! You have received 100% off!");
+                updateCart(); // Recalculate total with the discount
+            } else {
+                alert("Invalid coupon code.");
+            }
+        }
     </script>
 </body>
 </html>
