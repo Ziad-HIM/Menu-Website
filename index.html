@@ -1,4 +1,4 @@
-<!-- SESSION 4: MULTIPLE FILTERS AND NEW MENU ITEMS -->
+<!-- SESSION 5: ENHANCED FILTERS AND WEEKLY OFFERS -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,14 +59,21 @@
             margin: 0 10px;
             cursor: pointer;
             border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
         .filter-btn.active {
-            background-color: #218838;
+            background-color: #ffc107; /* Yellow color for active filters */
         }
 
         .filter-btn:hover {
             background-color: #218838;
+        }
+
+        .filter-description {
+            font-size: 16px;
+            margin-top: 10px;
+            color: #666;
         }
 
         /* Menu Item Styles */
@@ -112,6 +119,27 @@
             font-size: 18px;
             font-weight: bold;
             color: #28a745;
+        }
+
+        /* Weekly Offers Section */
+        .offers-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        .offers-section h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .offer {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
         }
 
         /* Footer */
@@ -162,6 +190,7 @@
             <button class="filter-btn" onclick="toggleFilter('pasta')">Pasta 🍝</button>
             <button class="filter-btn" onclick="toggleFilter('dessert')">Desserts 🍰</button>
             <button class="filter-btn" onclick="toggleFilter('all')">All</button>
+            <div class="filter-description">Select multiple filters to find your favorite dishes. Click 'All' to show everything.</div>
         </div>
 
         <!-- Menu Items -->
@@ -201,7 +230,6 @@
             <span class="price">$8.99</span>
         </div>
 
-        <!-- New Menu Items -->
         <div class="menu-item pasta">
             <h2>Fettuccine Alfredo</h2>
             <p>Rich creamy sauce with fettuccine pasta and parmesan cheese.</p>
@@ -219,6 +247,18 @@
             <p>Chicken, BBQ sauce, onions, and mozzarella.</p>
             <span class="price">$14.99</span>
         </div>
+
+        <!-- Weekly Offers Section -->
+        <div class="offers-section">
+            <h2>Weekly Offers 🌟</h2>
+            <div class="offer">Monday: Buy 1 Pizza, Get 1 Free 🍕🍕</div>
+            <div class="offer">Tuesday: 20% Off All Salads 🥗</div>
+            <div class="offer">Wednesday: Pasta Special - 2 for 1 🍝🍝</div>
+            <div class="offer">Thursday: 15% Off All Desserts 🍰</div>
+            <div class="offer">Friday: Free Soft Drink with Every Pizza 🍹</div>
+            <div class="offer">Saturday: Family Meal Deal - 30% Off 🍽️</div>
+            <div class="offer">Sunday: 25% Off Any Order Over $50 💰</div>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -232,36 +272,40 @@
 
         function toggleFilter(category) {
             const menuItems = document.querySelectorAll('.menu-item');
-            const filterBtn = document.querySelectorAll(`.filter-btn`);
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            // Toggle filter button color
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                if (button.textContent.trim() === category || category === 'all') {
+                    button.classList.toggle('active');
+                }
+            });
 
             if (category === 'all') {
                 activeFilters = [];
                 menuItems.forEach(item => item.classList.add('show'));
-                filterBtn.forEach(btn => btn.classList.remove('active'));
-                return;
-            }
-
-            const index = activeFilters.indexOf(category);
-
-            if (index === -1) {
-                activeFilters.push(category);
             } else {
-                activeFilters.splice(index, 1);
-            }
-
-            filterBtn.forEach(btn => {
-                if (activeFilters.includes(btn.textContent.trim().toLowerCase())) {
-                    btn.classList.add('active');
+                const index = activeFilters.indexOf(category);
+                if (index > -1) {
+                    activeFilters.splice(index, 1);
                 } else {
-                    btn.classList.remove('active');
+                    activeFilters.push(category);
                 }
-            });
 
-            menuItems.forEach(item => {
-                const itemCategory = Array.from(item.classList).find(cls => cls !== 'menu-item' && cls !== 'show');
-                item.style.display = activeFilters.length === 0 || activeFilters.includes(itemCategory) ? 'block' : 'none';
-            });
+                menuItems.forEach(item => {
+                    if (activeFilters.length === 0 || activeFilters.includes(item.classList[1])) {
+                        item.classList.add('show');
+                    } else {
+                        item.classList.remove('show');
+                    }
+                });
+            }
         }
+
+        // Show all items by default
+        window.onload = () => {
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.add('show'));
+        };
     </script>
 </body>
 </html>
